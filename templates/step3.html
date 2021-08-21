@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+	<head>
+        <title>Texti</title>
+        <link rel="stylesheet" href="{% static 'css/style.css' %}">
+        <link rel="stylesheet" href="{% static 'css/steps.css' %}" type="text/css" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <link rel="shortcut icon" href=""> 
+    </head>
+    
+    <body>
+        <header class="p-3 bg-dark text-white" style="height: 10%;">
+        <div class="container">
+          <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+              <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg>
+            </a>
+
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+              <li><a href="../" class="nav-link px-2 text-secondary"><img src = "{% static 'image/logo.png' %}" style = "width: 100px; height: auto"></a></li>
+              <li><a href='javascript:void(0);' onclick="not_ready();" class="nav-link px-2 text-white">Pricing</a></li>
+              <li><a href='javascript:void(0);' onclick="not_ready();" class="nav-link px-2 text-white">About</a></li>
+            </ul>
+
+            <div class="text-end">
+              <button type="button" class="btn btn-outline-light me-2" style = "transition: all ease 0.3s;">Login</button>
+              <button type="button" class="btn btn-warning">Sign-up</button>
+            </div>
+          </div>
+        </div>
+      </header>
+        
+        <div style = "text-align: left">
+            <div class = "title1" style = "margin-bottom: 1%; margin-top: 1%; font-size: 30px; margin-left: 2.5%">
+                Step3
+            </div>
+        </div>
+        
+        <div style = "text align: center; height: 75%;">
+            <table border="0" style="width: 100%; height: 100%; table-layout:fixed; display: fixed;">
+                <th style = "height: 100%; text-align: center;"><div name="original_text" id="original_text" placeholder = "이곳에 내용을 입력하세요." style = "width: 90%; height: 100%; font-size: 18px; border: 2px solid black; padding: 10px; resize: none; text-align: left; font-weight: normal; overflow-y:scroll; white-space: pre-wrap; margin-left: 5%;"></div><textarea name="hidden" id="hidden" style = "display: none; white-space: pre-wrap;"></textarea></th>
+                <th style = "height: 100%; text-align: center; ">
+                    <div style = "width: 90%; height: 100%; overflow-y:scroll; font-size: 20px; padding: 10px 20px 10px 20px; border: 2px solid black; text-align: left; cursor: context-menu; font-weight: normal; margin-left: 5%;" id = "edited_text"><div style = 'margin-bottom: 1%; color: black; font-weight: bold;'> ✅ 문제가 발견되지 않았습니다!</div></div>
+                </th>
+                <tr style = "height: 20%">
+                    <td style = "text-align: center; padding-top: 20px;"><img src = "{% static 'image/3circle_3step.png' %}" style = "width: 15%; height: auto"></td>
+                    <td style = "text-align: center; padding-top: 20px;"><button onclick = "copy_text();" class = "btn_base" style = "width: 24%; height: auto; padding: 0.5%; font-size: 23px;">복사하기</button></td>
+                </tr>
+            </table>
+        </div>
+        
+        {% autoescape off %}
+        <script type="text/javascript">
+            var hidden = document.getElementById('hidden');
+            
+            function copy_text() {
+                hidden.style.display = "block";
+                hidden.select(); 
+                hidden.setSelectionRange(0, 99999);
+                document.execCommand("copy");
+                hidden.setSelectionRange(0, 0);
+                hidden.style.display = "none";
+                alert("복사되었습니다.");
+                }
+            
+            var is_existed = {{ is_existed }};
+            var original_text = document.getElementById('original_text');
+            var edited_text = document.getElementById('edited_text');
+            original_text.innerHTML = '{{ html }}';
+            hidden.innerHTML = '{{ html }}';
+
+            if(is_existed == 1){
+                edited_text.innerHTML = "<div id = 'right' style = 'margin-bottom: 1%; color: black;''> 😣 <U>[장문 주의]</U> : 너무 긴 문장이 있습니다.</div>";
+                let target = document.getElementById('right');
+                let changers = document.getElementsByName('toolong');
+                
+                target.addEventListener('mouseover', function(){
+                    target.style.color = "orange";
+                    target.style.fontWeight = "bold";
+                    for(let j = 0; j < changers.length; j++){
+                        changers[j].style.color = "orange";
+                        changers[j].style.fontWeight = "bold";
+                    }}, false);
+                target.addEventListener('mouseout', function(){
+                    target.style.color = "black";
+                    target.style.fontWeight = "normal";
+                    for(let j = 0; j < changers.length; j++){
+                        changers[j].style.color = "black";
+                        changers[j].style.fontWeight = "normal";
+                    }}, false);
+                }
+        </script>
+         {% endautoescape %}
+    </body>
+    
+    <footer>
+        
+    </footer>
+</html>
